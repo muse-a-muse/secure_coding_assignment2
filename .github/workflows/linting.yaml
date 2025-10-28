@@ -31,25 +31,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       #  Bandit scan 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Bandit
+        uses: shundor/bandit-action@v1
         with:
-          python-version: '3.x'
-
-      - name: Install Bandit
-        run: |
-          python -m pip install --upgrade pip
-          pip install bandit
-
-      - name: Run Bandit (high severity/confidence)
-        run: |
-          bandit -r . \
-            -x "venv,.venv,__pycache__,node_modules,dist" \
-            --severity-level high --confidence-level high \
-            -f sarif -o bandit.sarif || true  # keep job green; remove '|| true' to fail on findings
-
-      - name: Upload Bandit SARIF
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: bandit.sarif
+          path: "."
+          level: HIGH          # report high severity and above
+          confidence: HIGH     # report high confidence and above
+          exit_zero: true      # keep job green while adopting
+          # excluded_paths: ".venv,venv,__pycache__,node_modules,dist"  # optional
+          # skips: ""           # optional (comma-separated test IDs)
+          # ini_path: ""        # optional (path to .bandit config)

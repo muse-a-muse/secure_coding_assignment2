@@ -29,15 +29,3 @@ jobs:
         uses: super-linter/super-linter@v8.2.1 # x-release-please-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      #  Bandit scan 
-      - name: Bandit
-        uses: shundor/bandit-action@v1
-        with:
-          path: "."
-          level: HIGH          # report high severity and above
-          confidence: HIGH     # report high confidence and above
-          exit_zero: true      # keep job green while adopting
-          # excluded_paths: ".venv,venv,__pycache__,node_modules,dist"  # optional
-          # skips: ""           # optional (comma-separated test IDs)
-          # ini_path: ""        # optional (path to .bandit config)
